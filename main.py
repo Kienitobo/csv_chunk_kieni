@@ -1,3 +1,7 @@
+import os
+import math
+import pandas as pd
+
 def csv_split(filename, user_specified_size):
     accepted_fmt = ["json", "csv"]
     doc_name, extension = filename.split(".")[0], filename.split(".")[1]
@@ -14,7 +18,11 @@ def csv_split(filename, user_specified_size):
         row_per_file = math.ceil(total_lenght_of_file / chunk_file_size)
         print(row_per_file)
         num = 1
-        for each_file in pd.read_csv(filename, chunksize=row_per_file, header=None):
-            each_file.to_csv(f"{doc_name}{num}.csv")
+        for each_file in pd.read_csv(filename, chunksize=row_per_file):
+            each_file.to_csv(f"{doc_name}{num}.csv", index=False)
             num += 1
         return
+
+filename=input('Please enter relative file path: ')
+user_specified_size=int(input('Please enter the preferred chunk size: '))
+csv_split(filename, user_specified_size)
